@@ -1,0 +1,12 @@
+.spin-text {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: bold;
+    color: blue;
+    cursor: pointer;
+    transition: transform 1s ease-in-out;
+}
+
+.spin {
+    transform: rotate(360deg);
+}
