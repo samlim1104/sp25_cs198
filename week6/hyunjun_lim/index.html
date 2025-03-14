@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
+    <body>
+      <h1> this is chat chat</h1>
+    </body> 
     <style>
       body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
 
@@ -23,6 +25,7 @@
 
     <script src="/socket.io/socket.io.js"></script>
 <script>
+  src="index.js"
   var socket = io();
 
   var messages = document.getElementById('messages');
@@ -39,11 +42,12 @@
 
   socket.on('chat message', function(msg) {
     var item = document.createElement('li');
+    msg = <span id="timestamp"></span>;
     item.textContent = msg;
     messages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
   });
 </script>
-
   </body>
+
 </html>
