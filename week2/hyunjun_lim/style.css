@@ -7,3 +7,16 @@ body {
     background: azure;
     color: blue;
 }
+
+@keyframes spin {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
+
+.spinning-text {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: bold;
+    color:blue;
+    animation: spin 1s linear infinite;
+}
