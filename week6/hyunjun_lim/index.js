@@ -9,14 +9,9 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-function updateTime() {
-  const now = new Date();
-  document.getElementById("timestamp").textContent = now.toLocaleString();
-}
-
 io.on('connection', (socket) => {
     socket.on('chat message', (msg) => {
-      updateTime()
+      msg.timeStamp = new Date().toLocaleString();
       io.emit('chat message', msg);
     });
   });;

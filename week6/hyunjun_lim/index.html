@@ -35,15 +35,18 @@
   form.addEventListener('submit', function(e) {
     e.preventDefault();
     if (input.value) {
-      socket.emit('chat message', input.value);
+      let messageData = {
+        text: input.value,
+        timestamp: new Date().toLocaleString()
+      };
+      socket.emit('chat message', messageData);
       input.value = '';
     }
   });
 
   socket.on('chat message', function(msg) {
     var item = document.createElement('li');
-    msg = <span id="timestamp"></span>;
-    item.textContent = msg;
+    item.innerHTML = `<strong>[${msg.timestamp}]</strong> ${msg.text}`;
     messages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
   });
