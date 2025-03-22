@@ -18,6 +18,10 @@
     </style>
   </head>
   <body>
+    <div id="usernamePrompt">
+      <input id="usernameInput" type="text" placeholder="Enter user"/>
+      <button onclick="setUsername()">Join</button>
+    </div>
     <ul id="messages"></ul>
     <form id="form" action="">
       <input id="input" autocomplete="off" /><button>Send</button>
@@ -27,6 +31,15 @@
 <script>
   src="index.js"
   var socket = io();
+  var username ="";
+
+  function setUsername() {
+    var input = document.getElementById("usernameInput").value.trim();
+    username = input;
+    document.getElementById("usernamePrompt").style.display = "none";
+    document.getElementById("messages").style.display = "block";
+    document.getElementById("form").style.display = "flex";
+  }
 
   var messages = document.getElementById('messages');
   var form = document.getElementById('form');
@@ -36,6 +49,7 @@
     e.preventDefault();
     if (input.value) {
       let messageData = {
+        username: username,
         text: input.value,
         timestamp: new Date().toLocaleString()
       };
@@ -46,7 +60,7 @@
 
   socket.on('chat message', function(msg) {
     var item = document.createElement('li');
-    item.innerHTML = `<strong>[${msg.timestamp}]</strong> ${msg.text}`;
+    item.innerHTML = `<strong>[${msg.timestamp}] ${msg.username}:</strong> ${msg.text}`;
     messages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
   });
