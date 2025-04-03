@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <body>
+      <h1> this is chat chat</h1>
+    </body> 
+    <style>
+      body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+
+      #form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
+      #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
+      #input:focus { outline: none; }
+      #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
+
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages > li { padding: 0.5rem 1rem; }
+      #messages > li:nth-child(odd) { background: #efefef; }
+    </style>
+  </head>
+  <body>
+    <div id="usernamePrompt">
+      <input id="usernameInput" type="text" placeholder="Enter user"/>
+      <button onclick="setUsername()">Join</button>
+    </div>
+    <ul id="messages"></ul>
+    <form id="form" action="">
+      <input id="input" autocomplete="off" /><button>Send</button>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+<script>
+  src="index.js"
+  var socket = io();
+  var username ="";
+
+  function setUsername() {
+    var input = document.getElementById("usernameInput").value.trim();
+    username = input;
+    document.getElementById("usernamePrompt").style.display = "none";
+    document.getElementById("messages").style.display = "block";
+    document.getElementById("form").style.display = "flex";
+  }
+
+  var messages = document.getElementById('messages');
+  var form = document.getElementById('form');
+  var input = document.getElementById('input');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (input.value) {
+      let messageData = {
+        username: username,
+        text: input.value,
+        timestamp: new Date().toLocaleString()
+      };
+      socket.emit('chat message', messageData);
+      input.value = '';
+    }
+  });
+
+  socket.on('chat message', function(msg) {
+    var item = document.createElement('li');
+    item.innerHTML = `<strong>[${msg.timestamp}] ${msg.username}:</strong> ${msg.text}`;
+    messages.appendChild(item);
+    window.scrollTo(0, document.body.scrollHeight);
+  });
+</script>
+  </body>
+
+</html>
