@@ -8,7 +8,7 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const messageSchema = new Schema({
+const messageSchema = new mongoose.Schema({
   username: String,
   text: String, 
   timestamp: String
@@ -20,7 +20,10 @@ app.get('/', function(req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
-io.on('connection', function(socket) {
+io.on('connection', async function(socket) {
+  const messages = await messageModel.find({}).sort({timestamp: 1}).limit(10).lean();
+  socket.emit('message history', messages);
+
     socket.on('chat message', function (msg){
       msg.timeStamp = new Date().toLocaleString();
       const message = new messageModel(msg);
@@ -28,9 +31,9 @@ io.on('connection', function(socket) {
         io.emit('chat message', msg);
       })
     });
-  });;
+  });
 
 server.listen(3000, async function() {
-  await mongoose.connect("mongodb+srv://samuellim:Sora6595@cluster0.jdbzmy1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+  await mongoose.connect("mongodb+srv://samuellim:Sora6595@cluster0.ovtmvad.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
   console.log('listening on *:3000');
 });

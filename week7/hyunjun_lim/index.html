@@ -58,6 +58,15 @@
     }
   });
 
+  socket.on('message history', function(history) {
+    history.forEach(msg => {
+      const mes = document.createElement('li');
+      mes.innerHTML = `<strong>[${msg.timestamp}] ${msg.username}:</strong> ${msg.text}`
+      messages.appendChild(mes);
+    })
+    window.scrollTo(0, document.body.scrollHeight);
+  });
+
   socket.on('chat message', function(msg) {
     var item = document.createElement('li');
     item.innerHTML = `<strong>[${msg.timestamp}] ${msg.username}:</strong> ${msg.text}`;
